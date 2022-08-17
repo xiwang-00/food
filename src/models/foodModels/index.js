@@ -38,9 +38,6 @@ class FoodModel {
     async updateFood({food_img} , {name , price , bowls , category_id }  , {id}){
 
         let findFood = await fetch(FIND_FOOD , id)
-        if(findFood){
-            fs.unlinkSync(path.join(process.cwd(),'src', "static" , findFood.image))
-        }
         let foodName = v4()+'.'+food_img.name.replace(/\s/g," ").split('.')[1]
         let book = await fetchAll(UPDATE_FOOD , name , price , foodName, bowls , category_id, id)
         food_img.mv(path.join(process.cwd(),'src', "static" , foodName) , (err) =>{
@@ -57,10 +54,8 @@ class FoodModel {
         if(!findFood){
             return {error:true , message:'Food not found'}
         }
-        fs.unlinkSync(path.join(process.cwd(),'src', "static" , findFood.image))
         let food = await fetchAll(DELETE_FOOD , foodId)
         return {error:false, message:'deleted'}
-
     }
 }
 
